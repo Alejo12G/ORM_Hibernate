@@ -1,4 +1,4 @@
-package orm_hibernate;
+package main.orm_hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

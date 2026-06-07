@@ -1,12 +1,10 @@
-package orm_hibernate;
+package main.orm_hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import java.util.List;
-
-public class ORMListado {
+public class ORMActualizar {
 
     public static void main(String[] args) {
         // Crear SessionFactory
@@ -19,24 +17,26 @@ public class ORMListado {
             try (Session session = factory.openSession()) {
                 session.beginTransaction(); // Iniciar transacción
 
-                // 🔹 Obtener la lista completa de artistas
-                List<Artista> artistas = session.createQuery("from Artista", Artista.class).getResultList();
+                // 🔹 ID del artista que queremos actualizar
+                int idArtista = 16; // Cambiar según la BD
 
-                // 🔹 Mostrar los resultados
-                if (!artistas.isEmpty()) {
-                    System.out.println("Lista de Artistas:");
-                    for (Artista artista : artistas) {
-                        System.out.println(artista);
-                    }
+                // 🔹 Buscar el artista en la base de datos
+                Artista artista = session.get(Artista.class, idArtista);
+
+                if (artista != null) {
+                    // 🔹 Actualizar los valores
+                    artista.setNombre("Henry Alfonso");
+                    artista.setGeneroMusical("Bachata");
+
+                    // 🔹 Guardar cambios
+                    session.getTransaction().commit();
+                    System.out.println("Artista actualizado: " + artista);
                 } else {
-                    System.out.println("No hay artistas registrados en la base de datos.");
+                    System.out.println("No se encontró el artista con ID: " + idArtista);
                 }
 
-                session.getTransaction().commit(); // Confirmar transacción
-                System.out.println("Listado finalizado correctamente");
-
             } catch (Exception e) {
-                System.err.println("Error en la consulta: " + e.getMessage());
+                System.err.println("Error en la actualización: " + e.getMessage());
                 e.printStackTrace();
             } finally {
                 factory.close(); // Cerrar la fábrica de sesiones
@@ -48,3 +48,4 @@ public class ORMListado {
         }
     }
 }
+
