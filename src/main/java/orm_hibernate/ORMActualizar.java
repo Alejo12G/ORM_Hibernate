@@ -1,45 +1,47 @@
-package main.orm_hibernate;
+package orm_hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import orm_hibernate.utils.Rol;
 
 public class ORMActualizar {
 
     public static void main(String[] args) {
         // Crear SessionFactory
         try (SessionFactory factory = new Configuration()
-                .configure("hibernate.cfg.xml") // Cargar configuración de Hibernate
-                .addAnnotatedClass(Artista.class) // Registrar la entidad
+                .configure() // Cargar configuración de Hibernate
+                .addAnnotatedClass(Usuario.class) // Registrar la entidad Usuario
                 .buildSessionFactory()) {
 
             // Iniciar sesión
             try (Session session = factory.openSession()) {
                 session.beginTransaction(); // Iniciar transacción
 
-                // 🔹 ID del artista que queremos actualizar
-                int idArtista = 16; // Cambiar según la BD
+                // 🔹 ID del usuario que queremos actualizar
+                int idUsuario = 1; // Cambiar según la base de datos
 
-                // 🔹 Buscar el artista en la base de datos
-                Artista artista = session.get(Artista.class, idArtista);
+                // 🔹 Buscar el usuario en la base de datos
+                Usuario usuario = session.get(Usuario.class, idUsuario);
 
-                if (artista != null) {
+                if (usuario != null) {
                     // 🔹 Actualizar los valores
-                    artista.setNombre("Henry Alfonso");
-                    artista.setGeneroMusical("Bachata");
+                    usuario.setNombre("Alejandro Gg");
+                    usuario.setDireccion("LLano BBolívar 456");
+                    usuario.setRol(Rol.cliente);
+                    usuario.setContraseña("nuevaClave123");
 
                     // 🔹 Guardar cambios
                     session.getTransaction().commit();
-                    System.out.println("Artista actualizado: " + artista);
+                    System.out.println("Usuario actualizado correctamente: " + usuario);
                 } else {
-                    System.out.println("No se encontró el artista con ID: " + idArtista);
+                    System.out.println("No se encontró el usuario con ID: " + idUsuario);
                 }
 
             } catch (Exception e) {
                 System.err.println("Error en la actualización: " + e.getMessage());
                 e.printStackTrace();
-            } finally {
-                factory.close(); // Cerrar la fábrica de sesiones
             }
 
         } catch (Exception e) {
@@ -48,4 +50,3 @@ public class ORMActualizar {
         }
     }
 }
-

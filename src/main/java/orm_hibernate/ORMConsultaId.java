@@ -1,4 +1,4 @@
-package main.orm_hibernate;
+package orm_hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,25 +9,25 @@ public class ORMConsultaId {
     public static void main(String[] args) {
         // Crear SessionFactory
         try (SessionFactory factory = new Configuration()
-                .configure("hibernate.cfg.xml") // Cargar configuración
-                .addAnnotatedClass(Artista.class) // Registrar la entidad
+                .configure() // Cargar configuración
+                .addAnnotatedClass(Usuario.class) // Registrar la entidad Usuario
                 .buildSessionFactory()) {
 
             // Iniciar sesión
             try (Session session = factory.openSession()) {
                 session.beginTransaction(); // Iniciar transacción
 
-                // 🔹 ID del artista a consultar (DEBE SER UN ENTERO)
-                int idArtista = 16; // Cambiar según la BD
+                // 🔹 ID del usuario a consultar
+                int idUsuario = 1; 
 
-                // 🔹 Obtener el artista desde la BD
-                Artista artista = session.get(Artista.class, idArtista);
+                // 🔹 Obtener el usuario desde la BD
+                Usuario usuario = session.get(Usuario.class, idUsuario);
 
                 // 🔹 Mostrar el resultado
-                if (artista != null) {
-                    System.out.println("Registro obtenido: " + artista);
+                if (usuario != null) {
+                    System.out.println("Registro obtenido: " + usuario);
                 } else {
-                    System.out.println("No se encontró el artista con ID: " + idArtista);
+                    System.out.println("No se encontró el usuario con ID: " + idUsuario);
                 }
 
                 session.getTransaction().commit(); // Confirmar transacción
